@@ -1,5 +1,7 @@
 const { Schema, model } = require('mongoose');
 const { isEmail } = require('validator');
+const bcrypt = require('bcrypt');
+const UnathorizedError = require('../errors/UnauthorizedError');
 
 const userSchema = new Schema({
   email: {
@@ -24,5 +26,24 @@ const userSchema = new Schema({
     maxlength: [30, 'Поле должно содержать максимум 30 символоа, вы ввели {VALUE}'],
   },
 });
+
+// eslint-disable-next-line func-names
+userSchema.statics.findUserByCredentials = function (email, password) {
+  return this.findOne({ email }).select('+password')
+    .then((user) => {
+      if (!user) {
+        throw new UnathorizedError('Неправильные почта или пароль');
+      }
+
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            throw new UnathorizedError('Неправильные почта или пароль');
+          }
+
+          return user;
+        });
+    });
+};
 
 module.exports = model('user', userSchema);
