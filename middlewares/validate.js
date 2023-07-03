@@ -54,7 +54,6 @@ const validateCreateMovie = celebrate({
     image: Joi.string().uri().required().regex(httpRegExp),
     trailerLink: Joi.string().uri().required().regex(httpRegExp),
     thumbnail: Joi.string().uri().required().regex(httpRegExp),
-    // owner: Joi.string().hex().required(),
     movieId: Joi.number().required(),
     nameRU: Joi.string().required().regex(rusRegExp), // russian words
     nameEN: Joi.string().required().regex(engRegExp), // english words
@@ -63,7 +62,7 @@ const validateCreateMovie = celebrate({
 
 const validateMovieId = celebrate({
   body: Joi.object().keys({
-    movieId: Joi.number().required(),
+    movieId: Joi.string().hex().length(24),
   }),
 });
 

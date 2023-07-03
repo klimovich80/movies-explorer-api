@@ -17,4 +17,4 @@ router.post('/', validateCreateMovie, createMovie);
 // возвращает все сохранённые текущим  пользователем фильмы
 router.get('/', getSavedMovie);
 // удаляет сохранённый фильм по id
-router.delete('/_id', validateMovieId, deleteMovie);
+router.delete('/:movieId', validateMovieId, deleteMovie);

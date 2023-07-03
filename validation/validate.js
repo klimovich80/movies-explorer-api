@@ -4,9 +4,6 @@ const engRegExp = /^[a-zA-Z 0-9-]+$/i;
 
 const rusRegExp = /^[А-Яа-яё 0-9-]+$/i;
 
-// TODO regexp russian spell only
-// TODO regexp english spell only
-
 module.exports = {
   httpRegExp, emailRegExp, engRegExp, rusRegExp,
 };
