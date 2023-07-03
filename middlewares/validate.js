@@ -1,5 +1,7 @@
 const { celebrate, Joi } = require('celebrate');
-const { httpRegExp, emailRegExp } = require('../validation/validate');
+const {
+  httpRegExp, emailRegExp, engRegExp, rusRegExp,
+} = require('../validation/validate');
 
 const validateUserLogin = celebrate({
   body: Joi.object().keys({
@@ -52,10 +54,10 @@ const validateCreateMovie = celebrate({
     image: Joi.string().uri().required().regex(httpRegExp),
     trailerLink: Joi.string().uri().required().regex(httpRegExp),
     thumbnail: Joi.string().uri().required().regex(httpRegExp),
-    owner: Joi.string().hex().required(),
+    // owner: Joi.string().hex().required(),
     movieId: Joi.number().required(),
-    nameRU: Joi.string().required(), // russian words
-    nameEN: Joi.string().required(), // english words
+    nameRU: Joi.string().required().regex(rusRegExp), // russian words
+    nameEN: Joi.string().required().regex(engRegExp), // english words
   }),
 });
 

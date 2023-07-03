@@ -58,7 +58,8 @@ const movieSchema = new Schema({
   // owner — _id пользователя, который сохранил фильм. Обязательное поле.
   owner: {
     type: Schema.Types.ObjectId,
-    required: true,
+    required: [true, 'Не удалось получить информацию о собственнике карточки'],
+    ref: 'user',
   },
   // movieId — id фильма, который содержится в ответе сервиса MoviesExplorer.
   // Обязательное поле в формате number.
