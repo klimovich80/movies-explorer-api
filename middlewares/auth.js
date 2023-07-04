@@ -3,7 +3,6 @@ const UnauthorizedError = require('../errors/UnauthorizedError');
 const { errorHandler } = require('../controllers/errors');
 const { jwtSecretCheck } = require('../config');
 
-// eslint-disable-next-line consistent-return
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
   const authError = new UnauthorizedError('Необходима авторизация');
@@ -24,4 +23,5 @@ module.exports = (req, res, next) => {
   req.user = payload;
 
   next();
+  return 1;
 };
