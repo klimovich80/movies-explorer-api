@@ -1,3 +1,4 @@
+const { Error } = require('mongoose');
 const movieModel = require('../models/movie');
 const { errorHandler, OK_STATUS, CREATED_STATUS } = require('./errors');
 const NotOwnerError = require('../errors/NotOwnerError');
@@ -24,15 +25,22 @@ const getSavedMovie = (req, res, next) => {
 };
 
 const deleteMovie = (req, res, next) => {
+  const { _id } = req.params;
+
   movieModel
-    .findById(req.params.movieId)
-    .orFail(() => { throw new Error.DocumentNotFoundError(); })
+    .findById(_id)
+    .orFail(() => {
+      throw new Error.DocumentNotFoundError();
+    })
     .then((movie) => {
       if (movie.owner.toString() !== req.user._id) {
         throw new NotOwnerError('Вы можете удалить только сохранённый фильм');
       }
-      movieModel.findByIdAndRemove(req.params.movieId).catch((err) => errorHandler(err, next));
-      res.status(OK_STATUS).send(movie);
+      movieModel.findByIdAndRemove(_id)
+        .then((removedMovie) => {
+          res.status(OK_STATUS).send(removedMovie);
+        })
+        .catch((err) => errorHandler(err, next));
     })
     .catch((err) => errorHandler(err, next));
 };

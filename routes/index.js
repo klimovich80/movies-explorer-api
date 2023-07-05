@@ -4,6 +4,7 @@ const movieRouter = require('./movies');
 const auth = require('../middlewares/auth');
 const { login, createUser } = require('../controllers/users');
 const { validateUserLogin, validateUserRegistration } = require('../middlewares/validate');
+const DocumentNotFoundError = require('../errors/CastError');
 
 // TODO убрать после ревью
 router.get('/crash-test', () => {
@@ -18,5 +19,6 @@ router.post('/signup', validateUserRegistration, createUser);
 router.use(auth);
 router.use('/users', userRouter);
 router.use('/movies', movieRouter);
+router.use(() => { throw new DocumentNotFoundError('страница не найдена'); });
 
 module.exports = router;
